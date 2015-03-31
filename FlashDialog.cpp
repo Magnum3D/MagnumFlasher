@@ -5,7 +5,7 @@
 // PLEASE DO "NOT" EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
 
-#include <wx/wxprec.h>
+#include "stdafx.h"
 
 #include "FlashDialog.h"
 
@@ -44,7 +44,7 @@ FlashDialog::FlashDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	
 	bSizer5->Add( bSizer2, 1, wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
 	
-	progressText = new wxStaticText( this, wxID_ANY, wxT("Press Refresh..."), wxDefaultPosition, wxDefaultSize, 0 );
+	progressText = new wxStaticText( this, wxID_ANY, wxT("Press Refresh..."), wxDefaultPosition, wxSize( 450,90 ), 0|wxSUNKEN_BORDER|wxVSCROLL );
 	progressText->Wrap( -1 );
 	bSizer5->Add( progressText, 0, wxALL, 5 );
 	

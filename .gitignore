@@ -5,3 +5,4 @@
 *.hex
 /*.opensdf
 /*.suo
+ipch

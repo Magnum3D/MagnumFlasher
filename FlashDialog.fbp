@@ -18,7 +18,7 @@
         <property name="name">FlashDialogProject</property>
         <property name="namespace"></property>
         <property name="path">.</property>
-        <property name="precompiled_header">#include &lt;wx/wxprec.h&gt;</property>
+        <property name="precompiled_header">#include &quot;stdafx.h&quot;</property>
         <property name="relative_path">1</property>
         <property name="skip_lua_events">1</property>
         <property name="skip_php_events">1</property>
@@ -502,14 +502,14 @@
                                 <property name="pos"></property>
                                 <property name="resize">Resizable</property>
                                 <property name="show">1</property>
-                                <property name="size"></property>
+                                <property name="size">450,90</property>
                                 <property name="style"></property>
                                 <property name="subclass"></property>
                                 <property name="toolbar_pane">0</property>
                                 <property name="tooltip"></property>
                                 <property name="window_extra_style"></property>
                                 <property name="window_name"></property>
-                                <property name="window_style"></property>
+                                <property name="window_style">wxSUNKEN_BORDER|wxVSCROLL</property>
                                 <property name="wrap">-1</property>
                                 <event name="OnChar"></event>
                                 <event name="OnEnterWindow"></event>
