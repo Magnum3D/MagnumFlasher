@@ -15,7 +15,7 @@ public:
 
 wxIMPLEMENT_APP(MyApp);
 
-#include "noname.h"
+#include "FlashDialog.h"
 
 class CustomDialog : public FlashDialog
 {

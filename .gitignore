@@ -1,3 +1,7 @@
 /Debug/*.tlog
 /Debug
 /Release
+*.sdf
+*.hex
+/*.opensdf
+/*.suo

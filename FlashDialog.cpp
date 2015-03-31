@@ -18,7 +18,7 @@ FlashDialog::FlashDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	wxBoxSizer* bSizer1;
 	bSizer1 = new wxBoxSizer( wxHORIZONTAL );
 	
-	logo = new wxStaticBitmap( this, wxID_ANY, wxBitmap( wxT("9745417.bmp"), wxBITMAP_TYPE_ANY ), wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER );
+	logo = new wxStaticBitmap( this, wxID_ANY, wxBitmap( wxT("logo.bmp"), wxBITMAP_TYPE_ANY ), wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER );
 	bSizer1->Add( logo, 0, wxALL, 5 );
 	
 	wxBoxSizer* bSizer5;
