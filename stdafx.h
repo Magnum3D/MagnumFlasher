@@ -4,8 +4,10 @@
     #include <wx/wx.h>
 #endif
 
-#include "wx/process.h"
+#include <wx/process.h>
 #include <wx/timer.h>
+#include <wx/config.h> 
+#include <wx/stdpaths.h>
 
 #include <curl/curl.h>
 

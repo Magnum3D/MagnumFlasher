@@ -23,6 +23,7 @@
 #include <wx/choice.h>
 #include <wx/button.h>
 #include <wx/sizer.h>
+#include <wx/textctrl.h>
 #include <wx/gauge.h>
 #include <wx/statline.h>
 #include <wx/dialog.h>
@@ -42,7 +43,7 @@ class FlashDialog : public wxDialog
 		wxStaticText* labelFirmwareChoice;
 		wxChoice* firmwareChoice;
 		wxButton* firmwareRefreshButton;
-		wxStaticText* progressText;
+		wxTextCtrl* progressText;
 		wxGauge* progressBar;
 		wxStaticLine* m_staticline1;
 		wxButton* flashButton;
@@ -50,6 +51,7 @@ class FlashDialog : public wxDialog
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void onActivateDialog( wxActivateEvent& event ) { event.Skip(); }
+		virtual void onClose( wxCloseEvent& event ) { event.Skip(); }
 		virtual void onFirmwareChoice( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onFirmwareRefreshButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onFlashButton( wxCommandEvent& event ) { event.Skip(); }

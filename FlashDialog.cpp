@@ -44,8 +44,10 @@ FlashDialog::FlashDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	
 	bSizer5->Add( bSizer2, 1, wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
 	
-	progressText = new wxStaticText( this, wxID_ANY, wxT("Press Refresh..."), wxDefaultPosition, wxSize( 450,90 ), 0|wxSUNKEN_BORDER|wxVSCROLL );
-	progressText->Wrap( -1 );
+	progressText = new wxTextCtrl( this, wxID_ANY, wxT("Press Refresh..."), wxDefaultPosition, wxSize( 550,125 ), wxTE_AUTO_URL|wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxTE_WORDWRAP|wxSTATIC_BORDER|wxVSCROLL );
+	progressText->SetForegroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNTEXT ) );
+	progressText->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE ) );
+	
 	bSizer5->Add( progressText, 0, wxALL, 5 );
 	
 	progressBar = new wxGauge( this, wxID_ANY, 100, wxDefaultPosition, wxDefaultSize, wxGA_HORIZONTAL );
@@ -79,6 +81,7 @@ FlashDialog::FlashDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	
 	// Connect Events
 	this->Connect( wxEVT_ACTIVATE, wxActivateEventHandler( FlashDialog::onActivateDialog ) );
+	this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( FlashDialog::onClose ) );
 	firmwareChoice->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( FlashDialog::onFirmwareChoice ), NULL, this );
 	firmwareRefreshButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( FlashDialog::onFirmwareRefreshButton ), NULL, this );
 	flashButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( FlashDialog::onFlashButton ), NULL, this );
@@ -89,6 +92,7 @@ FlashDialog::~FlashDialog()
 {
 	// Disconnect Events
 	this->Disconnect( wxEVT_ACTIVATE, wxActivateEventHandler( FlashDialog::onActivateDialog ) );
+	this->Disconnect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( FlashDialog::onClose ) );
 	firmwareChoice->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( FlashDialog::onFirmwareChoice ), NULL, this );
 	firmwareRefreshButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( FlashDialog::onFirmwareRefreshButton ), NULL, this );
 	flashButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( FlashDialog::onFlashButton ), NULL, this );
