@@ -1,0 +1,136 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-04-02 22:27+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: FlashDialog.cpp:24
+msgid "logo.bmp"
+msgstr ""
+
+#: FlashDialog.cpp:36 Source.cpp:82 Source.cpp:194
+msgid "Select firmware"
+msgstr ""
+
+#: FlashDialog.cpp:47
+msgid "Refresh"
+msgstr ""
+
+#: FlashDialog.cpp:53
+msgid "Press Refresh..."
+msgstr ""
+
+#: FlashDialog.cpp:69
+msgid "Flash now"
+msgstr ""
+
+#: FlashDialog.cpp:72
+msgid "Close"
+msgstr ""
+
+#: FlashDialog.cpp:87
+msgid "(C) 2014 - 2015 Magnum3D.ru"
+msgstr ""
+
+#: Source.cpp:89
+#, c-format
+msgid ""
+"%s %s\n"
+"Downloads: %i\n"
+"%s"
+msgstr ""
+
+#: Source.cpp:102 Source.cpp:130
+msgid "MagnumFlasher-by-huksley"
+msgstr ""
+
+#: Source.cpp:121
+msgid "Downloading releases..."
+msgstr ""
+
+#: Source.cpp:126
+msgid "https://api.github.com/repos/Magnum3D/MagnumFirmware/releases"
+msgstr ""
+
+#: Source.cpp:136
+#, c-format
+msgid "Error requesting %s: %i %s"
+msgstr ""
+
+#: Source.cpp:186
+#, c-format
+msgid "Found %i firmware releases"
+msgstr ""
+
+#: Source.cpp:207
+#, c-format
+msgid "Downloading %s"
+msgstr ""
+
+#: Source.cpp:210
+#, c-format
+msgid "Failed to download %s"
+msgstr ""
+
+#: Source.cpp:213
+#, c-format
+msgid "hid_bootloader_cli_upgraded -mmcu=at90usb1286 -w -v %s"
+msgstr ""
+
+#: Source.cpp:220
+#, c-format
+msgid "Flashing %s"
+msgstr ""
+
+#: Source.cpp:223 Source.cpp:224
+#, c-format
+msgid "Execution of '%s' failed."
+msgstr ""
+
+#: Source.cpp:227
+#, c-format
+msgid "Process launched (%ld): '%s'"
+msgstr ""
+
+#: Source.cpp:228
+#, c-format
+msgid "Process %ld (%s) launched."
+msgstr ""
+
+#: Source.cpp:234
+#, c-format
+msgid "Finished with err code: %i"
+msgstr ""
+
+#: Source.cpp:246
+#, c-format
+msgid "Download && flash %s???"
+msgstr ""
+
+#: Source.cpp:247
+msgid "Confirm"
+msgstr ""
+
+#: Source.cpp:342
+msgid "MagnumFlasher"
+msgstr ""
+
+#: Source.cpp:342
+msgid "Magnum3D"
+msgstr ""
+
+#: Source.cpp:343
+msgid "Magnum3D firmware flasher"
+msgstr ""

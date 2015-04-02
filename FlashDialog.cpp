@@ -16,10 +16,16 @@ FlashDialog::FlashDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	this->SetSizeHints( wxSize( -1,-1 ), wxDefaultSize );
 	
 	wxBoxSizer* bSizer1;
-	bSizer1 = new wxBoxSizer( wxHORIZONTAL );
+	bSizer1 = new wxBoxSizer( wxVERTICAL );
 	
-	logo = new wxStaticBitmap( this, wxID_ANY, wxBitmap( wxT("logo.bmp"), wxBITMAP_TYPE_ANY ), wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER );
-	bSizer1->Add( logo, 0, wxALL, 5 );
+	wxBoxSizer* bSizer51;
+	bSizer51 = new wxBoxSizer( wxHORIZONTAL );
+	
+	logo = new wxStaticBitmap( this, wxID_ANY, wxBitmap( wxT("logo.bmp"), wxBITMAP_TYPE_ANY ), wxDefaultPosition, wxSize( 160,-1 ), wxSIMPLE_BORDER );
+	logo->SetForegroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW ) );
+	logo->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW ) );
+	
+	bSizer51->Add( logo, 0, wxALL, 5 );
 	
 	wxBoxSizer* bSizer5;
 	bSizer5 = new wxBoxSizer( wxVERTICAL );
@@ -44,7 +50,7 @@ FlashDialog::FlashDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	
 	bSizer5->Add( bSizer2, 1, wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
 	
-	progressText = new wxTextCtrl( this, wxID_ANY, wxT("Press Refresh..."), wxDefaultPosition, wxSize( 550,125 ), wxTE_AUTO_URL|wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxTE_WORDWRAP|wxSTATIC_BORDER|wxVSCROLL );
+	progressText = new wxTextCtrl( this, wxID_ANY, wxT("Press Refresh..."), wxDefaultPosition, wxSize( 550,125 ), wxTE_MULTILINE|wxTE_READONLY|wxTE_WORDWRAP|wxSTATIC_BORDER|wxVSCROLL );
 	progressText->SetForegroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNTEXT ) );
 	progressText->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE ) );
 	
@@ -70,7 +76,17 @@ FlashDialog::FlashDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	bSizer5->Add( bSizer4, 1, wxEXPAND, 5 );
 	
 	
-	bSizer1->Add( bSizer5, 1, wxEXPAND, 5 );
+	bSizer51->Add( bSizer5, 1, wxEXPAND, 5 );
+	
+	
+	bSizer1->Add( bSizer51, 1, wxEXPAND, 5 );
+	
+	m_staticline2 = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
+	bSizer1->Add( m_staticline2, 0, wxEXPAND | wxALL, 5 );
+	
+	m_staticText2 = new wxStaticText( this, wxID_ANY, wxT("(C) 2014 - 2015 Magnum3D.ru"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
+	m_staticText2->Wrap( -1 );
+	bSizer1->Add( m_staticText2, 0, wxALL, 5 );
 	
 	
 	this->SetSizer( bSizer1 );

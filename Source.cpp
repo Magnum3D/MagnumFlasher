@@ -79,14 +79,14 @@ public:
 
 	virtual void onFirmwareChoice( wxCommandEvent& event ) {
 		if (firmwareChoice->GetSelection() == 0) {
-			setProgress("Select firmware");
+			setProgress(_("Select firmware"));
 			flashButton->Disable();
 		} else {
 			int sel = firmwareChoice->GetSelection();
 			if (sel > 0 && sel <= releases.Count()) {
 				wxString txt;
 				FirmwareRelease r = releases[sel - 1];
-				txt.Printf("%s %s\nDownloads: %i\n%s", r.name, r.file, r.downloadCount, r.description);
+				txt.Printf(_("%s %s\nDownloads: %i\n%s"), r.name, r.file, r.downloadCount, r.description);
 				setProgress(txt);
 				flashButton->Enable();
 			}
@@ -99,7 +99,7 @@ public:
 		curl_easy_setopt(curl, CURLOPT_URL, (const char*) url);
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
 		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
-		curl_easy_setopt(curl, CURLOPT_USERAGENT, "MagnumFlasher-by-huksley");
+		curl_easy_setopt(curl, CURLOPT_USERAGENT, _("MagnumFlasher-by-huksley"));
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curlWXStringWriter);
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buf);
 		CURLcode res = curl_easy_perform(curl);
@@ -118,22 +118,22 @@ public:
 	}
 
 	virtual void onFirmwareRefreshButton( wxCommandEvent& event ) {
-		setProgress("Downloading releases...");
+		setProgress(_("Downloading releases..."));
 		firmwareRefreshButton->Disable();
 		CURL* curl = curl_easy_init();
 		if(curl) {
 			wxString buf;
-			wxString url = app->config->Read("ReleaseURL", "https://api.github.com/repos/Magnum3D/MagnumFirmware/releases");
+			wxString url = app->config->Read("ReleaseURL", _("https://api.github.com/repos/Magnum3D/MagnumFirmware/releases"));
 			curl_easy_setopt(curl, CURLOPT_URL, (const char*) url);
 			curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
 			curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
-			curl_easy_setopt(curl, CURLOPT_USERAGENT, "MagnumFlasher-by-huksley");
+			curl_easy_setopt(curl, CURLOPT_USERAGENT, _("MagnumFlasher-by-huksley"));
 			curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curlWXStringWriter);
 			curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buf);
 			CURLcode res = curl_easy_perform(curl);
 			curl_easy_cleanup(curl);
 			if (res != CURLE_OK) {
-				setProgress(wxString::Format("Error requesting %s: %i %s",  url, res, wxString(curl_easy_strerror(res))));
+				setProgress(wxString::Format(_("Error requesting %s: %i %s"),  url, res, wxString(curl_easy_strerror(res))));
 				return;
 			}
 
@@ -183,7 +183,7 @@ public:
 	void fillFirmware() {
 		firmwareChoice->Clear();
 		wxString str;
-		str.Printf("Found %i firmware releases", releases.Count());
+		str.Printf(_("Found %i firmware releases"), releases.Count());
 		firmwareChoice->Append(str);
 		for (int i = 0; i < releases.Count(); i++) {
 			wxString title;
@@ -191,7 +191,7 @@ public:
 			firmwareChoice->Append(title);
 		}
 		firmwareChoice->SetSelection(0);
-		setProgress("Select firmware");
+		setProgress(_("Select firmware"));
 		firmwareRefreshButton->Enable();
 	}
 
@@ -204,34 +204,34 @@ public:
 		if (sel > 0 && sel <= releases.Count()) {
 			FirmwareRelease r = releases[sel - 1];
 			progressBar->SetValue(0);
-			setProgress(wxString::Format("Downloading %s", r.file));
+			setProgress(wxString::Format(_("Downloading %s"), r.file));
 			wxFileName* fname = downloadFile(r.file, r.downloadUrl);
 			if (fname == NULL) {
-				setProgress(wxString::Format("Failed to download %s", r.downloadUrl));
+				setProgress(wxString::Format(_("Failed to download %s"), r.downloadUrl));
 			}
 			wxString ffile = fname->GetFullPath();
-			wxString cmd = app->config->Read("DefaultFlashCommand", "hid_bootloader_cli_upgraded -mmcu=at90usb1286 -w -v %s");
+			wxString cmd = app->config->Read("DefaultFlashCommand", _("hid_bootloader_cli_upgraded -mmcu=at90usb1286 -w -v %s"));
 			cmd = wxString::Format(cmd, ffile);
 			//wxMessageBox(cmd);
 			delete fname;
 			MyProcess * const process = new MyProcess(this, cmd);
 			process->Redirect();
 			running = process;
-			setProgress(wxString::Format("Flashing %s", r.file));
+			setProgress(wxString::Format(_("Flashing %s"), r.file));
 			long pid = wxExecute(cmd, wxEXEC_ASYNC | wxEXEC_HIDE_CONSOLE, process);
 			if (!pid) {
-				setProgress(wxString::Format("Execution of '%s' failed.", cmd));
-				wxLogError(wxT("Execution of '%s' failed."), cmd.c_str());
+				setProgress(wxString::Format(_("Execution of '%s' failed."), cmd));
+				wxLogError(_("Execution of '%s' failed."), cmd.c_str());
 				delete process;
 			} else {
-				setProgress(wxString::Format("Process launched (%ld): '%s'", pid, cmd));
-				wxLogStatus(wxT("Process %ld (%s) launched."), pid, cmd.c_str());
+				setProgress(wxString::Format(_("Process launched (%ld): '%s'"), pid, cmd));
+				wxLogStatus(_("Process %ld (%s) launched."), pid, cmd.c_str());
 			}
 		}
 	}
 
 	void executeFinished(FlashFinishedEvent& event) {
-		setProgress(wxString::Format("Finished with err code: %i", event.statusCode));
+		setProgress(wxString::Format(_("Finished with err code: %i"), event.statusCode));
 		wxMicroSleep(10);
 		flashButton->Enable();
 		progressBar->SetValue(100);
@@ -243,8 +243,8 @@ public:
 		if (sel > 0 && sel <= releases.Count()) {
 			wxString txt;
 			FirmwareRelease r = releases[sel - 1];
-			txt.Printf("Download && flash %s???", r.file);
-			int answer = wxMessageBox(txt, "Confirm", wxOK | wxCANCEL, this);
+			txt.Printf(_("Download && flash %s???"), r.file);
+			int answer = wxMessageBox(txt, _("Confirm"), wxOK | wxCANCEL, this);
 			if (answer == wxOK) {
 				executeFlash();
 				flashButton->Disable();
@@ -335,8 +335,12 @@ void MyProcess::OnTerminate(int pid, int status) {
 
 bool MyApp::OnInit()
 {
-	config = new wxConfig("MagnumFlasher", "Magnum3D");
-    CustomDialog *custom = new CustomDialog(this, wxT("Magnum3D firmware flasher"));
+	
+	wxFileSystem::AddHandler(new wxMemoryFSHandler);
+	void wxInitAllImageHandlers();
+
+	config = new wxConfig(_("MagnumFlasher"), _("Magnum3D"));
+    CustomDialog *custom = new CustomDialog(this, _("Magnum3D firmware flasher"));
     //custom->Show(true);
     return true;
 }

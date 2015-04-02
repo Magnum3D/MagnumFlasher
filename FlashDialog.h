@@ -48,6 +48,8 @@ class FlashDialog : public wxDialog
 		wxStaticLine* m_staticline1;
 		wxButton* flashButton;
 		wxButton* closeButton;
+		wxStaticLine* m_staticline2;
+		wxStaticText* m_staticText2;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void onActivateDialog( wxActivateEvent& event ) { event.Skip(); }

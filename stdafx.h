@@ -8,6 +8,8 @@
 #include <wx/timer.h>
 #include <wx/config.h> 
 #include <wx/stdpaths.h>
+#include <wx/fs_mem.h>
+#include <wx/intl.h>
 
 #include <curl/curl.h>
 
