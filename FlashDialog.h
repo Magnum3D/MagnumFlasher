@@ -10,6 +10,7 @@
 
 #include <wx/artprov.h>
 #include <wx/xrc/xmlres.h>
+#include <wx/intl.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
@@ -26,6 +27,7 @@
 #include <wx/textctrl.h>
 #include <wx/gauge.h>
 #include <wx/statline.h>
+#include <wx/hyperlink.h>
 #include <wx/dialog.h>
 
 ///////////////////////////////////////////////////////////////////////////
@@ -48,6 +50,8 @@ class FlashDialog : public wxDialog
 		wxStaticLine* m_staticline1;
 		wxButton* flashButton;
 		wxButton* closeButton;
+		wxStaticText* m_staticText3;
+		wxHyperlinkCtrl* m_hyperlink1;
 		wxStaticLine* m_staticline2;
 		wxStaticText* m_staticText2;
 		
@@ -58,11 +62,12 @@ class FlashDialog : public wxDialog
 		virtual void onFirmwareRefreshButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onFlashButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onCloseButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onLinkClick( wxHyperlinkEvent& event ) { event.Skip(); }
 		
 	
 	public:
 		
-		FlashDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Flash Magnum3D"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE ); 
+		FlashDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Flash Magnum3D"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE ); 
 		~FlashDialog();
 	
 };

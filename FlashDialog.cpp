@@ -33,7 +33,7 @@ FlashDialog::FlashDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	wxBoxSizer* bSizer2;
 	bSizer2 = new wxBoxSizer( wxHORIZONTAL );
 	
-	labelFirmwareChoice = new wxStaticText( this, wxID_ANY, wxT("Select firmware"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	labelFirmwareChoice = new wxStaticText( this, wxID_ANY, _("Select firmware"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	labelFirmwareChoice->Wrap( -1 );
 	bSizer2->Add( labelFirmwareChoice, 0, wxALL, 5 );
 	
@@ -44,13 +44,13 @@ FlashDialog::FlashDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	
 	bSizer2->Add( firmwareChoice, 0, wxALL, 5 );
 	
-	firmwareRefreshButton = new wxButton( this, wxID_ANY, wxT("Refresh"), wxDefaultPosition, wxDefaultSize, 0 );
+	firmwareRefreshButton = new wxButton( this, wxID_ANY, _("Refresh"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer2->Add( firmwareRefreshButton, 0, wxALL, 5 );
 	
 	
 	bSizer5->Add( bSizer2, 1, wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
 	
-	progressText = new wxTextCtrl( this, wxID_ANY, wxT("Press Refresh..."), wxDefaultPosition, wxSize( 550,125 ), wxTE_MULTILINE|wxTE_READONLY|wxTE_WORDWRAP|wxSTATIC_BORDER|wxVSCROLL );
+	progressText = new wxTextCtrl( this, wxID_ANY, _("Press Refresh..."), wxDefaultPosition, wxSize( 550,125 ), wxTE_MULTILINE|wxTE_READONLY|wxTE_WORDWRAP|wxSTATIC_BORDER|wxVSCROLL );
 	progressText->SetForegroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNTEXT ) );
 	progressText->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE ) );
 	
@@ -66,14 +66,28 @@ FlashDialog::FlashDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	wxBoxSizer* bSizer4;
 	bSizer4 = new wxBoxSizer( wxHORIZONTAL );
 	
-	flashButton = new wxButton( this, wxID_ANY, wxT("Flash now"), wxDefaultPosition, wxDefaultSize, 0 );
+	flashButton = new wxButton( this, wxID_ANY, _("Flash now"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer4->Add( flashButton, 0, wxALL, 5 );
 	
-	closeButton = new wxButton( this, wxID_ANY, wxT("Close"), wxDefaultPosition, wxDefaultSize, 0 );
+	closeButton = new wxButton( this, wxID_ANY, _("Close"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer4->Add( closeButton, 0, wxALL, 5 );
 	
 	
-	bSizer5->Add( bSizer4, 1, wxEXPAND, 5 );
+	bSizer4->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	m_staticText3 = new wxStaticText( this, wxID_ANY, _("Click Boot button on printer during flashing!"), wxPoint( -1,-1 ), wxDefaultSize, wxALIGN_CENTRE );
+	m_staticText3->Wrap( -1 );
+	m_staticText3->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 90, false, wxEmptyString ) );
+	m_staticText3->SetForegroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNTEXT ) );
+	m_staticText3->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE ) );
+	
+	bSizer4->Add( m_staticText3, 0, wxALL, 5 );
+	
+	m_hyperlink1 = new wxHyperlinkCtrl( this, wxID_ANY, _("More info"), wxT("http://magnum3d.ru/firmware/"), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
+	bSizer4->Add( m_hyperlink1, 0, wxALL, 5 );
+	
+	
+	bSizer5->Add( bSizer4, 1, wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
 	
 	
 	bSizer51->Add( bSizer5, 1, wxEXPAND, 5 );
@@ -84,7 +98,7 @@ FlashDialog::FlashDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	m_staticline2 = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
 	bSizer1->Add( m_staticline2, 0, wxEXPAND | wxALL, 5 );
 	
-	m_staticText2 = new wxStaticText( this, wxID_ANY, wxT("(C) 2014 - 2015 Magnum3D.ru"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
+	m_staticText2 = new wxStaticText( this, wxID_ANY, _("(C) 2014 - 2015 Magnum3D.ru"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
 	m_staticText2->Wrap( -1 );
 	bSizer1->Add( m_staticText2, 0, wxALL, 5 );
 	
@@ -102,6 +116,7 @@ FlashDialog::FlashDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	firmwareRefreshButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( FlashDialog::onFirmwareRefreshButton ), NULL, this );
 	flashButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( FlashDialog::onFlashButton ), NULL, this );
 	closeButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( FlashDialog::onCloseButton ), NULL, this );
+	m_hyperlink1->Connect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( FlashDialog::onLinkClick ), NULL, this );
 }
 
 FlashDialog::~FlashDialog()
@@ -113,5 +128,6 @@ FlashDialog::~FlashDialog()
 	firmwareRefreshButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( FlashDialog::onFirmwareRefreshButton ), NULL, this );
 	flashButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( FlashDialog::onFlashButton ), NULL, this );
 	closeButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( FlashDialog::onCloseButton ), NULL, this );
+	m_hyperlink1->Disconnect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( FlashDialog::onLinkClick ), NULL, this );
 	
 }

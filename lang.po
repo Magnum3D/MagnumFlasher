@@ -7,22 +7,22 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Magnum Flasher 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-02 22:10+0300\n"
-"PO-Revision-Date: 2015-04-02 22:25+0300\n"
+"POT-Creation-Date: 2015-04-02 22:50+0300\n"
+"PO-Revision-Date: 2015-04-02 22:51+0300\n"
 "Last-Translator: Magnum3D <contact@magnum3d.ru>\n"
 "Language-Team: Magnum3D <contact@magnum3d.ru>\n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.5.7\n"
-"Language: ru\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
 #: FlashDialog.cpp:24
 msgid "logo.bmp"
 msgstr ""
 
-#: FlashDialog.cpp:36 Source.cpp:82 Source.cpp:194
+#: FlashDialog.cpp:36 Source.cpp:83 Source.cpp:195
 msgid "Select firmware"
 msgstr "Выберите прошивку"
 
@@ -42,11 +42,23 @@ msgstr "Прошить"
 msgid "Close"
 msgstr "Закрыть"
 
-#: FlashDialog.cpp:87
+#: FlashDialog.cpp:78
+msgid "Click Boot button on printer during flashing!"
+msgstr "Нажмите на кнопку Boot на принтере во время прошивки!"
+
+#: FlashDialog.cpp:86
+msgid "More info"
+msgstr "Описание"
+
+#: FlashDialog.cpp:86
+msgid "http://magnum3d.ru/firmware/"
+msgstr ""
+
+#: FlashDialog.cpp:101
 msgid "(C) 2014 - 2015 Magnum3D.ru"
 msgstr ""
 
-#: Source.cpp:89
+#: Source.cpp:90
 #, c-format
 msgid ""
 "%s %s\n"
@@ -58,85 +70,85 @@ msgstr ""
 "%s"
 
 # User-Agent строка для запроса списка прошивок
-#: Source.cpp:102 Source.cpp:130
+#: Source.cpp:103 Source.cpp:131
 msgid "MagnumFlasher-by-huksley"
 msgstr ""
 
-#: Source.cpp:121
+#: Source.cpp:122
 msgid "Downloading releases..."
 msgstr "Скачиваю список прошивок"
 
-#: Source.cpp:126
+#: Source.cpp:127
 msgid "https://api.github.com/repos/Magnum3D/MagnumFirmware/releases"
 msgstr ""
 
-#: Source.cpp:136
+#: Source.cpp:137
 #, c-format
 msgid "Error requesting %s: %i %s"
 msgstr "Ошибка запроса %s: %i %s"
 
-#: Source.cpp:186
+#: Source.cpp:187
 #, c-format
 msgid "Found %i firmware releases"
 msgstr "Найдено прошивок: %i"
 
-#: Source.cpp:207
+#: Source.cpp:208
 #, c-format
 msgid "Downloading %s"
 msgstr "Скачиваю %s"
 
-#: Source.cpp:210
+#: Source.cpp:211
 #, c-format
 msgid "Failed to download %s"
 msgstr "Не удалось скачать %s"
 
-#: Source.cpp:213
+#: Source.cpp:214
 #, c-format
 msgid "hid_bootloader_cli_upgraded -mmcu=at90usb1286 -w -v %s"
 msgstr ""
 
-#: Source.cpp:220
+#: Source.cpp:221
 #, c-format
 msgid "Flashing %s"
 msgstr "Прошиваю %s"
 
-#: Source.cpp:223 Source.cpp:224
+#: Source.cpp:224 Source.cpp:225
 #, c-format
 msgid "Execution of '%s' failed."
-msgstr ""
+msgstr "Выполнить '%s' не удалось."
 
-#: Source.cpp:227
+#: Source.cpp:228
 #, c-format
 msgid "Process launched (%ld): '%s'"
 msgstr "Процесс запущен (%ld): '%s'"
 
-#: Source.cpp:228
+#: Source.cpp:229
 #, c-format
 msgid "Process %ld (%s) launched."
 msgstr "Процесс %ld (%s) запущен."
 
-#: Source.cpp:234
+#: Source.cpp:235
 #, c-format
 msgid "Finished with err code: %i"
 msgstr "Закончено с ошибкой: %i"
 
-#: Source.cpp:246
+#: Source.cpp:247
 #, c-format
 msgid "Download && flash %s???"
 msgstr "Скачать прошивку %s и прошить в принтер?"
 
-#: Source.cpp:247
+#: Source.cpp:248
 msgid "Confirm"
 msgstr "Подтвердить"
 
-#: Source.cpp:342
+#: Source.cpp:346
 msgid "MagnumFlasher"
 msgstr ""
 
-#: Source.cpp:342
+#: Source.cpp:346
 msgid "Magnum3D"
 msgstr ""
 
-#: Source.cpp:343
+#: Source.cpp:347
 msgid "Magnum3D firmware flasher"
 msgstr "Обновление прошивки для 3D-принтеров Magnum3D"

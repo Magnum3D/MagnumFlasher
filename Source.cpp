@@ -6,6 +6,7 @@ class MyApp: public wxApp
 public:
     virtual bool OnInit();
 	wxConfig* config;
+	wxLocale* locale;
 };
 
 wxIMPLEMENT_APP(MyApp);
@@ -338,7 +339,10 @@ bool MyApp::OnInit()
 	
 	wxFileSystem::AddHandler(new wxMemoryFSHandler);
 	void wxInitAllImageHandlers();
-
+	wxLocale::AddCatalogLookupPathPrefix(".");
+	locale = new wxLocale();
+	locale->Init(wxLANGUAGE_RUSSIAN);
+	locale->AddCatalog("lang");
 	config = new wxConfig(_("MagnumFlasher"), _("Magnum3D"));
     CustomDialog *custom = new CustomDialog(this, _("Magnum3D firmware flasher"));
     //custom->Show(true);
