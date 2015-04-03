@@ -7,6 +7,8 @@ public:
     virtual bool OnInit();
 	wxConfig* config;
 	wxLocale* locale;
+	wxLog* log;
+	FILE* logFile;
 };
 
 wxIMPLEMENT_APP(MyApp);
@@ -147,15 +149,17 @@ public:
 	void parseFirmware(wxString buf) {
 		releases.Clear();
 		Document d;
+		wxLogVerbose("JSON: %s", buf);
 		d.Parse(buf);
 		app->config->Write("LatestReleases", buf);
 		int cap = d.Capacity();
-		buf.Printf("%i", cap);
+		wxLogVerbose("Found releases: %i", cap);
 		for (int i = 0; i < cap; i++) {
 			wxString publishDate = d[i]["published_at"].GetString();
 			wxString body = d[i]["body"].GetString();
 			wxString name = d[i]["name"].GetString();
-				
+			wxLogVerbose("Found release: %i %s", i, name);
+
 			bool found = false;
 			const Value& assets = d[i]["assets"];
 			if (!assets.IsNull() && assets.IsArray()) {
@@ -163,6 +167,7 @@ public:
 					const Value& asset = assets[j];
 						
 					wxString file = asset["name"].GetString();
+					wxLogVerbose("Found asset: %i %s", i, file);
 					wxString fileUrl = asset["browser_download_url"].GetString();
 					int downloadCount = asset["download_count"].GetInt();
 					if (file.EndsWith(".hex")) {
@@ -173,6 +178,7 @@ public:
 						r.downloadUrl = fileUrl;
 						r.published = publishDate;
 						r.downloadCount = downloadCount;
+						wxLogVerbose("Registering firmware: %s %s", file, fileUrl);
 						releases.Add(r);
 						break;
 					}
@@ -334,17 +340,32 @@ void MyProcess::OnTerminate(int pid, int status) {
 	m_parent->addEvent(new FlashFinishedEvent(status));
 }
 
+#include <winsparkle.h>
+
 bool MyApp::OnInit()
 {
-	
+	// http://magnum3d.ru/firmware/appcast.xml
+	// win_sparkle_set_appcast_url(_("https://github.com/Magnum3D/MagnumFlasher/releases/download/beta/appcast.xml"));
+	win_sparkle_set_appcast_url(_("http://magnum3d.ru/downloads/appcast.xml"));
+	win_sparkle_init();
+
+	//logFile = fopen(wxString::Format("%s/MagnumFlasher.log", wxStandardPaths::Get().GetTempDir()), "w+");
+	//log = new wxLogStderr(logFile);
+	wxLog::SetLogLevel(wxLOG_Max);
+	wxLog::SetVerbose(true);
 	wxFileSystem::AddHandler(new wxMemoryFSHandler);
 	void wxInitAllImageHandlers();
 	wxLocale::AddCatalogLookupPathPrefix(".");
 	locale = new wxLocale();
 	locale->Init(wxLANGUAGE_RUSSIAN);
 	locale->AddCatalog("lang");
-	config = new wxConfig(_("MagnumFlasher"), _("Magnum3D"));
+	config = new wxConfig(_("Magnum Flasher"), _("Magnum3D"));
     CustomDialog *custom = new CustomDialog(this, _("Magnum3D firmware flasher"));
     //custom->Show(true);
+	wxLog::SetActiveTarget(NULL);
+	delete log;
+	fclose(logFile);
+
+	win_sparkle_cleanup();
     return true;
 }
