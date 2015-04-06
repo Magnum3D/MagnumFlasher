@@ -16,7 +16,10 @@ wxIMPLEMENT_APP(MyApp);
 #include "FlashDialog.h"
 
 size_t curlWXStringWriter(void *ptr, size_t size, size_t nmemb, wxString* buf) {
-	buf->Append(wxString::FromUTF8((char*) ptr, size * nmemb));
+	char* ch = (char*) calloc(1, size * nmemb + 1);
+	memcpy(ch, ptr, size * nmemb);
+	buf->Append(wxString::FromUTF8(ch, size * nmemb));
+	free(ch);
 	return size * nmemb;
 }
 
@@ -150,14 +153,19 @@ public:
 		releases.Clear();
 		Document d;
 		wxLogVerbose("JSON: %s", buf);
-		d.Parse(buf);
+		const char* json = (const char*)buf.mb_str(wxConvUTF8);
+		d.Parse(json);
+		if (d.HasParseError()) {
+			wxLogWarning("Failed to parse JSON, code %i pos %i", (int) d.GetParseError(), d.GetErrorOffset());
+			return;
+		}
 		app->config->Write("LatestReleases", buf);
 		int cap = d.Capacity();
 		wxLogVerbose("Found releases: %i", cap);
 		for (int i = 0; i < cap; i++) {
-			wxString publishDate = d[i]["published_at"].GetString();
-			wxString body = d[i]["body"].GetString();
-			wxString name = d[i]["name"].GetString();
+			wxString publishDate = wxString::FromUTF8(d[i]["published_at"].GetString());
+			wxString body = wxString::FromUTF8(d[i]["body"].GetString());
+			wxString name = wxString::FromUTF8(d[i]["name"].GetString());
 			wxLogVerbose("Found release: %i %s", i, name);
 
 			bool found = false;
@@ -202,6 +210,46 @@ public:
 		firmwareRefreshButton->Enable();
 	}
 
+	virtual void flashFile( wxCommandEvent& event ) {
+		if (running != NULL) {
+			return;
+		}
+
+		wxFileDialog openFileDialog(this, _("Open firmware file"), "", "", "HEX files (*.hex)|*.hex", wxFD_OPEN|wxFD_FILE_MUST_EXIST);
+		if (openFileDialog.ShowModal() == wxID_CANCEL) {
+			return;     // the user changed idea...
+		}
+
+		wxString txt;
+		txt.Printf(_("Flash %s???"), openFileDialog.GetPath());
+		int answer = wxMessageBox(txt, _("Confirm"), wxOK | wxCANCEL, this);
+		if (answer == wxOK) {
+			flashFile(openFileDialog.GetPath(), openFileDialog.GetPath());
+		}
+	}
+
+	virtual void flashFile(wxString ffile, wxString fileName) {
+		if (running != NULL) {
+			return;
+		}
+
+		wxString cmd = app->config->Read("DefaultFlashCommand2", _("hid_bootloader_cli_upgraded -mmcu=at90usb1286 -w -v \"%s\""));
+		cmd = wxString::Format(cmd, ffile);
+		MyProcess * const process = new MyProcess(this, cmd);
+		process->Redirect();
+		running = process;
+		setProgress(wxString::Format(_("Flashing %s"), fileName));
+		long pid = wxExecute(cmd, wxEXEC_ASYNC | wxEXEC_HIDE_CONSOLE, process);
+		if (!pid) {
+			setProgress(wxString::Format(_("Execution of '%s' failed."), cmd));
+			wxLogError(_("Execution of '%s' failed."), cmd.c_str());
+			delete process;
+		} else {
+			setProgress(wxString::Format(_("Process launched (%ld): '%s'"), pid, cmd));
+			wxLogStatus(_("Process %ld (%s) launched."), pid, cmd.c_str());
+		}
+	}
+
 	void executeFlash() {
 		if (running != NULL) {
 			return;
@@ -217,23 +265,8 @@ public:
 				setProgress(wxString::Format(_("Failed to download %s"), r.downloadUrl));
 			}
 			wxString ffile = fname->GetFullPath();
-			wxString cmd = app->config->Read("DefaultFlashCommand", _("hid_bootloader_cli_upgraded -mmcu=at90usb1286 -w -v %s"));
-			cmd = wxString::Format(cmd, ffile);
-			//wxMessageBox(cmd);
+			flashFile(ffile, r.file);
 			delete fname;
-			MyProcess * const process = new MyProcess(this, cmd);
-			process->Redirect();
-			running = process;
-			setProgress(wxString::Format(_("Flashing %s"), r.file));
-			long pid = wxExecute(cmd, wxEXEC_ASYNC | wxEXEC_HIDE_CONSOLE, process);
-			if (!pid) {
-				setProgress(wxString::Format(_("Execution of '%s' failed."), cmd));
-				wxLogError(_("Execution of '%s' failed."), cmd.c_str());
-				delete process;
-			} else {
-				setProgress(wxString::Format(_("Process launched (%ld): '%s'"), pid, cmd));
-				wxLogStatus(_("Process %ld (%s) launched."), pid, cmd.c_str());
-			}
 		}
 	}
 
@@ -344,15 +377,30 @@ void MyProcess::OnTerminate(int pid, int status) {
 
 bool MyApp::OnInit()
 {
-	// http://magnum3d.ru/firmware/appcast.xml
-	// win_sparkle_set_appcast_url(_("https://github.com/Magnum3D/MagnumFlasher/releases/download/beta/appcast.xml"));
-	win_sparkle_set_appcast_url(_("http://magnum3d.ru/downloads/appcast.xml"));
-	win_sparkle_init();
-
 	//logFile = fopen(wxString::Format("%s/MagnumFlasher.log", wxStandardPaths::Get().GetTempDir()), "w+");
 	//log = new wxLogStderr(logFile);
 	wxLog::SetLogLevel(wxLOG_Max);
-	wxLog::SetVerbose(true);
+	wxCmdLineParser cmd(argc, argv);
+	cmd.AddLongSwitch("verbose");
+	cmd.AddLongSwitch("help");
+	if (cmd.Parse(true) == -1) {
+		return true;
+	}
+
+	if (cmd.Found("help")) {
+		cmd.Usage();
+		return true;
+	}
+
+	if (cmd.Found("verbose")) {
+		wxLog::SetVerbose(true);
+	}
+
+	// http://magnum3d.ru/firmware/appcast.xml
+	win_sparkle_set_appcast_url(_("https://github.com/Magnum3D/MagnumFlasher/releases/download/beta/appcast.xml"));
+	//win_sparkle_set_appcast_url(_("http://magnum3d.ru/downloads/appcast.xml"));
+	win_sparkle_init();
+
 	wxFileSystem::AddHandler(new wxMemoryFSHandler);
 	void wxInitAllImageHandlers();
 	wxLocale::AddCatalogLookupPathPrefix(".");

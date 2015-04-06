@@ -50,6 +50,7 @@ class FlashDialog : public wxDialog
 		wxStaticLine* m_staticline1;
 		wxButton* flashButton;
 		wxButton* closeButton;
+		wxButton* m_button4;
 		wxStaticText* m_staticText3;
 		wxHyperlinkCtrl* m_hyperlink1;
 		wxStaticLine* m_staticline2;
@@ -62,6 +63,7 @@ class FlashDialog : public wxDialog
 		virtual void onFirmwareRefreshButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onFlashButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onCloseButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void flashFile( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onLinkClick( wxHyperlinkEvent& event ) { event.Skip(); }
 		
 	

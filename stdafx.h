@@ -10,6 +10,7 @@
 #include <wx/stdpaths.h>
 #include <wx/fs_mem.h>
 #include <wx/intl.h>
+#include <wx/cmdline.h>
 
 #include <curl/curl.h>
 
