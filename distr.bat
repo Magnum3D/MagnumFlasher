@@ -10,11 +10,9 @@ copy wx\*.dll distr
 copy libcurl\*.dll distr
 copy ms\*.dll distr
 copy winsparkle\Release\*.dll distr
+copy *.txt distr
 
-echo %date%
-set today=%date:~6,4%%date:~3,2%%date:~-0,2%
-echo %today%
 
-cd distr
-zip -r -m -q MagnumFlasher-%today%.zip *.*
-cd ..
+REM cd distr
+REM zip -r -m -q MagnumFlasher-%today%.zip *.*
+REM cd ..

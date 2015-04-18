@@ -19,7 +19,7 @@ BEGIN
             VALUE "Comments", "Magnum Flasher"
             VALUE "CompanyName", "Magnum3D\0"
             VALUE "FileDescription", "Magnum Flasher for 3d-printer firmware flash\0"
-            VALUE "FileVersion", "1.0\0"
+            VALUE "FileVersion", "1.1\0"
             VALUE "InternalName", "MagnumFlasher\0"
             VALUE "OriginalFilename", "MagnumFlasher.exe\0"
             VALUE "LegalCopyright", "TBA\0"

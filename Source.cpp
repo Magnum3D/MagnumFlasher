@@ -396,9 +396,11 @@ bool MyApp::OnInit()
 		wxLog::SetVerbose(true);
 	}
 
-	// http://magnum3d.ru/firmware/appcast.xml
-	win_sparkle_set_appcast_url(_("https://github.com/Magnum3D/MagnumFlasher/releases/download/beta/appcast.xml"));
-	//win_sparkle_set_appcast_url(_("http://magnum3d.ru/downloads/appcast.xml"));
+	
+	config = new wxConfig(_("Magnum Flasher"), _("Magnum3D"));
+	wxString appcastUrl = config->Read("AppcastURL", _("http://magnum3d.ru/downloads/appcast.xml"));
+	config->Write("AppcastURL", appcastUrl);
+	win_sparkle_set_appcast_url(appcastUrl);
 	win_sparkle_init();
 
 	wxFileSystem::AddHandler(new wxMemoryFSHandler);
@@ -407,7 +409,6 @@ bool MyApp::OnInit()
 	locale = new wxLocale();
 	locale->Init(wxLANGUAGE_RUSSIAN);
 	locale->AddCatalog("lang");
-	config = new wxConfig(_("Magnum Flasher"), _("Magnum3D"));
     CustomDialog *custom = new CustomDialog(this, _("Magnum3D firmware flasher"));
     //custom->Show(true);
 	wxLog::SetActiveTarget(NULL);
