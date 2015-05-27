@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: Magnum Flasher 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-04-06 21:55+0300\n"
-"PO-Revision-Date: 2015-04-06 21:56+0300\n"
+"PO-Revision-Date: 2015-05-27 15:58+0400\n"
 "Last-Translator: Magnum3D <contact@magnum3d.ru>\n"
 "Language-Team: Magnum3D <contact@magnum3d.ru>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.7\n"
+"X-Generator: Poedit 1.8.1\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
 #: FlashDialog.cpp:25
@@ -44,11 +44,11 @@ msgstr "Закрыть"
 
 #: FlashDialog.cpp:76
 msgid "File..."
-msgstr "Прошить файл"
+msgstr "Прошить файл ..."
 
 #: FlashDialog.cpp:79
 msgid "Click Boot button on printer during flashing!"
-msgstr "Нажмите на кнопку Boot на принтере во время прошивки!"
+msgstr "Установите Ключ, включите принтер и нажмите кнопку \"Прошить\""
 
 #: FlashDialog.cpp:87
 msgid "More info"
@@ -103,7 +103,7 @@ msgstr "Выбрать файл с прошивкой"
 #: Source.cpp:224
 #, c-format
 msgid "Flash %s???"
-msgstr "Прошить %s???"
+msgstr "Прошить файл %s???"
 
 #: Source.cpp:225 Source.cpp:287
 msgid "Confirm"
@@ -155,8 +155,7 @@ msgid "Download && flash %s???"
 msgstr "Скачать прошивку %s и прошить в принтер?"
 
 #: Source.cpp:400
-msgid ""
-"https://github.com/Magnum3D/MagnumFlasher/releases/download/beta/appcast.xml"
+msgid "https://github.com/Magnum3D/MagnumFlasher/releases/download/beta/appcast.xml"
 msgstr ""
 
 #: Source.cpp:410
@@ -170,4 +169,4 @@ msgstr ""
 
 #: Source.cpp:411
 msgid "Magnum3D firmware flasher"
-msgstr "Обновление прошивки для 3D-принтеров Magnum3D"
+msgstr "Утилита обновления прошивки для 3D-принтеров Magnum 3D"
