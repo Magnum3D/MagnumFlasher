@@ -21,7 +21,7 @@ FlashDialog::FlashDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	wxBoxSizer* bSizer51;
 	bSizer51 = new wxBoxSizer( wxHORIZONTAL );
 	
-	bSizer51->SetMinSize( wxSize( 650,-1 ) ); 
+	bSizer51->SetMinSize( wxSize( 840,-1 ) ); 
 	logo = new wxStaticBitmap( this, wxID_ANY, wxBitmap( wxT("logo.bmp"), wxBITMAP_TYPE_ANY ), wxDefaultPosition, wxSize( 160,-1 ), wxSIMPLE_BORDER );
 	logo->SetForegroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW ) );
 	logo->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW ) );
@@ -51,11 +51,12 @@ FlashDialog::FlashDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	
 	bSizer5->Add( bSizer2, 1, wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
 	
-	progressText = new wxTextCtrl( this, wxID_ANY, _("Press Refresh..."), wxDefaultPosition, wxSize( 680,125 ), wxTE_MULTILINE|wxTE_READONLY|wxTE_WORDWRAP|wxSTATIC_BORDER|wxVSCROLL );
+	progressText = new wxTextCtrl( this, wxID_ANY, _("Press Refresh..."), wxDefaultPosition, wxSize( -1,-1 ), wxTE_AUTO_URL|wxTE_MULTILINE|wxTE_READONLY|wxTE_WORDWRAP|wxSTATIC_BORDER|wxVSCROLL );
 	progressText->SetForegroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNTEXT ) );
 	progressText->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE ) );
+	progressText->SetMinSize( wxSize( 680,125 ) );
 	
-	bSizer5->Add( progressText, 0, wxALL, 5 );
+	bSizer5->Add( progressText, 0, wxALL|wxEXPAND, 5 );
 	
 	progressBar = new wxGauge( this, wxID_ANY, 100, wxDefaultPosition, wxDefaultSize, wxGA_HORIZONTAL );
 	progressBar->SetValue( 0 ); 

@@ -92,7 +92,7 @@ public:
 			if (sel > 0 && sel <= releases.Count()) {
 				wxString txt;
 				FirmwareRelease r = releases[sel - 1];
-				txt.Printf(_("%s %s\nDownloads: %i\n%s"), r.name, r.file, r.downloadCount, r.description);
+				txt.Printf(_("%s %s\n\n%s"), r.name, r.file, r.description);
 				setProgress(txt);
 				flashButton->Enable();
 			}
@@ -271,7 +271,11 @@ public:
 	}
 
 	void executeFinished(FlashFinishedEvent& event) {
-		setProgress(wxString::Format(_("Finished with err code: %i"), event.statusCode));
+		if (event.statusCode == 0) {
+			setProgress(_("Successfully flashed."));			
+		} else {
+			setProgress(wxString::Format(_("Finished with err code: %i"), event.statusCode));
+		}
 		wxMicroSleep(10);
 		flashButton->Enable();
 		progressBar->SetValue(100);

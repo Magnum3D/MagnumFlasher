@@ -98,7 +98,7 @@
                     <property name="flag">wxEXPAND</property>
                     <property name="proportion">1</property>
                     <object class="wxBoxSizer" expanded="1">
-                        <property name="minimum_size">650,-1</property>
+                        <property name="minimum_size">840,-1</property>
                         <property name="name">bSizer51</property>
                         <property name="orient">wxHORIZONTAL</property>
                         <property name="permission">none</property>
@@ -464,7 +464,7 @@
                                 </object>
                                 <object class="sizeritem" expanded="0">
                                     <property name="border">5</property>
-                                    <property name="flag">wxALL</property>
+                                    <property name="flag">wxALL|wxEXPAND</property>
                                     <property name="proportion">0</property>
                                     <object class="wxTextCtrl" expanded="0">
                                         <property name="BottomDockable">1</property>
@@ -500,7 +500,7 @@
                                         <property name="maxlength"></property>
                                         <property name="min_size"></property>
                                         <property name="minimize_button">0</property>
-                                        <property name="minimum_size"></property>
+                                        <property name="minimum_size">680,125</property>
                                         <property name="moveable">1</property>
                                         <property name="name">progressText</property>
                                         <property name="pane_border">1</property>
@@ -511,8 +511,8 @@
                                         <property name="pos"></property>
                                         <property name="resize">Resizable</property>
                                         <property name="show">1</property>
-                                        <property name="size">680,125</property>
-                                        <property name="style">wxTE_MULTILINE|wxTE_READONLY|wxTE_WORDWRAP</property>
+                                        <property name="size">-1,-1</property>
+                                        <property name="style">wxTE_AUTO_URL|wxTE_MULTILINE|wxTE_READONLY|wxTE_WORDWRAP</property>
                                         <property name="subclass"></property>
                                         <property name="toolbar_pane">0</property>
                                         <property name="tooltip"></property>
