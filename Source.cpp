@@ -31,6 +31,7 @@ class MyProcess: public wxProcess
 {
 public:
     MyProcess(CustomDialog* parent, const wxString& cmd);
+	virtual ~MyProcess();
 
     virtual void OnTerminate(int pid, int status);
 
@@ -64,6 +65,10 @@ public:
 public:
 	FirmwareReleases releases;
 	MyApp* app;
+
+	wxString getProgress() {
+		return progressText->GetValue();
+	}
 
 	void setProgress(wxString txt) {
 		progressText->SetValue(txt);
@@ -237,6 +242,7 @@ public:
 		cmd = wxString::Format(cmd, ffile);
 		MyProcess * const process = new MyProcess(this, cmd);
 		process->Redirect();
+		this->setProgress("");
 		running = process;
 		setProgress(wxString::Format(_("Flashing %s"), fileName));
 		long pid = wxExecute(cmd, wxEXEC_ASYNC | wxEXEC_HIDE_CONSOLE, process);
@@ -301,6 +307,9 @@ public:
 	}
 
 	virtual void onCloseButton( wxCommandEvent& event ) {
+		if (running != NULL) {
+			delete running;
+		}
 		this->Close();
 	}
 
@@ -308,7 +317,7 @@ public:
 		if (running != NULL) {
 			progressBar->SetValue(progressBar->GetValue() + 1);
 
-			wxString text = progressText->GetLabel();
+			wxString text = getProgress();
 			wxString orig = text;
 
 			if (running->IsInputAvailable()) {
@@ -371,6 +380,10 @@ CustomDialog::CustomDialog(MyApp* app, const wxString & title): FlashDialog(NULL
 MyProcess::MyProcess(CustomDialog* parent, const wxString& cmd): wxProcess(parent) {
 	m_cmd = cmd;
     m_parent = parent;
+}
+
+MyProcess::~MyProcess() {
+	this->Kill(this->GetPid());
 }
 
 void MyProcess::OnTerminate(int pid, int status) {

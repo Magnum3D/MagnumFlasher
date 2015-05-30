@@ -85,9 +85,6 @@ FlashDialog::FlashDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	
 	bSizer4->Add( m_staticText3, 0, wxALL, 5 );
 	
-	m_hyperlink1 = new wxHyperlinkCtrl( this, wxID_ANY, _("More info"), wxT("http://magnum3d.ru/firmware/"), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
-	bSizer4->Add( m_hyperlink1, 0, wxALL, 5 );
-	
 	
 	bSizer5->Add( bSizer4, 1, wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
 	
@@ -100,9 +97,18 @@ FlashDialog::FlashDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	m_staticline2 = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
 	bSizer1->Add( m_staticline2, 0, wxEXPAND | wxALL, 5 );
 	
+	wxBoxSizer* bSizer6;
+	bSizer6 = new wxBoxSizer( wxHORIZONTAL );
+	
 	m_staticText2 = new wxStaticText( this, wxID_ANY, _("(C) 2014 - 2015 Magnum3D.ru"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
 	m_staticText2->Wrap( -1 );
-	bSizer1->Add( m_staticText2, 0, wxALL, 5 );
+	bSizer6->Add( m_staticText2, 0, wxALL, 5 );
+	
+	m_hyperlink1 = new wxHyperlinkCtrl( this, wxID_ANY, _("More info"), wxT("http://magnum3d.ru/firmware/"), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
+	bSizer6->Add( m_hyperlink1, 0, wxALL, 5 );
+	
+	
+	bSizer1->Add( bSizer6, 0, wxEXPAND, 5 );
 	
 	
 	this->SetSizer( bSizer1 );
