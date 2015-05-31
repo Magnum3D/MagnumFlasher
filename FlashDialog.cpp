@@ -105,6 +105,8 @@ FlashDialog::FlashDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	bSizer6->Add( m_staticText2, 0, wxALL, 5 );
 	
 	m_hyperlink1 = new wxHyperlinkCtrl( this, wxID_ANY, _("More info"), wxT("http://magnum3d.ru/firmware/"), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
+	m_hyperlink1->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
+	
 	bSizer6->Add( m_hyperlink1, 0, wxALL, 5 );
 	
 	
