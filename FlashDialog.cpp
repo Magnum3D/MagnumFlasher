@@ -110,6 +110,12 @@ FlashDialog::FlashDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	bSizer6->Add( m_hyperlink1, 0, wxALL, 5 );
 	
 	
+	bSizer6->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	checkUpdatesButton = new wxButton( this, wxID_ANY, _("Check for updates"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer6->Add( checkUpdatesButton, 0, wxALL, 5 );
+	
+	
 	bSizer1->Add( bSizer6, 0, wxEXPAND, 5 );
 	
 	
@@ -128,6 +134,7 @@ FlashDialog::FlashDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	closeButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( FlashDialog::onCloseButton ), NULL, this );
 	m_button4->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( FlashDialog::flashFile ), NULL, this );
 	m_hyperlink1->Connect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( FlashDialog::onLinkClick ), NULL, this );
+	checkUpdatesButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( FlashDialog::onCheckUpdatesButton ), NULL, this );
 }
 
 FlashDialog::~FlashDialog()
@@ -141,5 +148,6 @@ FlashDialog::~FlashDialog()
 	closeButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( FlashDialog::onCloseButton ), NULL, this );
 	m_button4->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( FlashDialog::flashFile ), NULL, this );
 	m_hyperlink1->Disconnect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( FlashDialog::onLinkClick ), NULL, this );
+	checkUpdatesButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( FlashDialog::onCheckUpdatesButton ), NULL, this );
 	
 }

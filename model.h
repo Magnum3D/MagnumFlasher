@@ -10,6 +10,7 @@ public:
 	wxString downloadUrl;
 	wxString description;
 	wxString published;
+	wxString date;
 	int downloadCount;
 };
 

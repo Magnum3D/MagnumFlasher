@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "model.h"
 
+
+#include <winsparkle.h>
+
 class MyApp: public wxApp
 {
 public:
@@ -16,7 +19,7 @@ wxIMPLEMENT_APP(MyApp);
 #include "FlashDialog.h"
 
 size_t curlWXStringWriter(void *ptr, size_t size, size_t nmemb, wxString* buf) {
-	char* ch = (char*) calloc(1, size * nmemb + 1);
+	char* ch = (char*) calloc(1, size * nmemb + 2);
 	memcpy(ch, ptr, size * nmemb);
 	buf->Append(wxString::FromUTF8(ch, size * nmemb));
 	free(ch);
@@ -57,6 +60,12 @@ wxEvent* FlashFinishedEvent::Clone() const {
 	return new FlashFinishedEvent(this->statusCode);
 }
 
+/*
+static int CompareReleases(const FirmwareRelease** a, const FirmwareRelease** b) {
+	return 0;
+}
+*/
+
 class CustomDialog : public FlashDialog
 {
 public:
@@ -87,6 +96,11 @@ public:
 		Destroy();
 		app->Exit();
 	}
+	
+	virtual void onCheckUpdatesButton(wxCommandEvent& event) {
+		win_sparkle_set_automatic_check_for_updates(1);
+		win_sparkle_check_update_with_ui();
+	}
 
 	virtual void onFirmwareChoice( wxCommandEvent& event ) {
 		if (firmwareChoice->GetSelection() == 0) {
@@ -97,7 +111,11 @@ public:
 			if (sel > 0 && sel <= releases.Count()) {
 				wxString txt;
 				FirmwareRelease r = releases[sel - 1];
-				txt.Printf(_("%s %s\n\n%s"), r.name, r.file, r.description);
+				//wxDateTime dd;
+				//wxString::const_iterator leftOver;
+				//   "updated_at": "2015-06-01T20:01:35Z",
+				//dd.ParseFormat(r.date, wxString("%Y-%m-%d'T'"), &leftOver);
+				txt.Printf(_("%s\n\n[%s] %s\n\n%s"), r.name, r.date, r.file, r.description);
 				setProgress(txt);
 				flashButton->Enable();
 			}
@@ -161,7 +179,27 @@ public:
 		const char* json = (const char*)buf.mb_str(wxConvUTF8);
 		d.Parse(json);
 		if (d.HasParseError()) {
-			wxLogWarning("Failed to parse JSON, code %i pos %i", (int) d.GetParseError(), d.GetErrorOffset());
+			const char* err = "?";
+			switch (d.GetParseError()) {
+			case kParseErrorDocumentEmpty: err = "The document is empty."; break;
+		    case kParseErrorDocumentRootNotSingular: err = "The document root must not follow by other values."; break;
+			case kParseErrorValueInvalid: err = "Invalid value."; break;
+			case kParseErrorObjectMissName: err = "Missing a name for object member."; break;
+			case kParseErrorObjectMissColon: err = "Missing a colon after a name of object member."; break;
+			case kParseErrorObjectMissCommaOrCurlyBracket: err = "Missing a comma or '}' after an object member."; break;
+			case kParseErrorArrayMissCommaOrSquareBracket: err = "Missing a comma or ']' after an array element."; break;
+			case kParseErrorStringUnicodeEscapeInvalidHex: err = "Incorrect hex digit after \\u escape in string."; break;
+			case kParseErrorStringUnicodeSurrogateInvalid: err = "The surrogate pair in string is invalid."; break;
+			case kParseErrorStringEscapeInvalid: err = "Invalid escape character in string."; break;
+			case kParseErrorStringMissQuotationMark: err = "Missing a closing quotation mark in string."; break;
+			case kParseErrorStringInvalidEncoding: err = "Invalid encoding in string."; break;
+			case kParseErrorNumberTooBig: err = "Number too big to be stored in double."; break;
+			case kParseErrorNumberMissFraction: err = "Miss fraction part in number."; break;
+			case kParseErrorNumberMissExponent: err = "Miss exponent in number."; break;
+			case kParseErrorTermination: err = "Parsing was terminated."; break;
+			case kParseErrorUnspecificSyntaxError: err = "Unspecific syntax error."; break;
+			}
+			wxLogWarning("Failed to parse JSON, code %i %s pos %i", (int) d.GetParseError(), wxString(err), d.GetErrorOffset());
 			return;
 		}
 		app->config->Write("LatestReleases", buf);
@@ -183,6 +221,10 @@ public:
 					wxLogVerbose("Found asset: %i %s", i, file);
 					wxString fileUrl = asset["browser_download_url"].GetString();
 					int downloadCount = asset["download_count"].GetInt();
+					wxString fDate = asset["created_at"].GetString();
+					if (asset.HasMember("updated_at")) {
+						fDate = asset["updated_at"].GetString();
+					}
 					if (file.EndsWith(".hex")) {
 						FirmwareRelease r;
 						r.name = name;
@@ -191,12 +233,14 @@ public:
 						r.downloadUrl = fileUrl;
 						r.published = publishDate;
 						r.downloadCount = downloadCount;
+						r.date = fDate;
 						wxLogVerbose("Registering firmware: %s %s", file, fileUrl);
 						releases.Add(r);
-						break;
 					}
 				}
 			}
+
+			//releases.Sort(CompareReleases);
 		}
 	}
 
@@ -390,7 +434,6 @@ void MyProcess::OnTerminate(int pid, int status) {
 	m_parent->addEvent(new FlashFinishedEvent(status));
 }
 
-#include <winsparkle.h>
 
 bool MyApp::OnInit()
 {

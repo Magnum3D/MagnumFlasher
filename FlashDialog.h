@@ -55,6 +55,7 @@ class FlashDialog : public wxDialog
 		wxStaticLine* m_staticline2;
 		wxStaticText* m_staticText2;
 		wxHyperlinkCtrl* m_hyperlink1;
+		wxButton* checkUpdatesButton;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void onActivateDialog( wxActivateEvent& event ) { event.Skip(); }
@@ -65,6 +66,7 @@ class FlashDialog : public wxDialog
 		virtual void onCloseButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void flashFile( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onLinkClick( wxHyperlinkEvent& event ) { event.Skip(); }
+		virtual void onCheckUpdatesButton( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
