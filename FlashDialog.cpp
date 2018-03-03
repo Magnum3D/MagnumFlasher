@@ -100,7 +100,7 @@ FlashDialog::FlashDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	wxBoxSizer* bSizer6;
 	bSizer6 = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_staticText2 = new wxStaticText( this, wxID_ANY, _("(C) 2014 - 2015 Magnum3D.ru"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
+	m_staticText2 = new wxStaticText( this, wxID_ANY, _("(C) 2014 - 2018 Magnum3D.ru"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
 	m_staticText2->Wrap( -1 );
 	bSizer6->Add( m_staticText2, 0, wxALL, 5 );
 	

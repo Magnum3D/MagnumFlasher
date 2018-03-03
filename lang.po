@@ -59,7 +59,7 @@ msgid "http://magnum3d.ru/firmware/"
 msgstr ""
 
 #: FlashDialog.cpp:102
-msgid "(C) 2014 - 2015 Magnum3D.ru"
+msgid "(C) 2014 - 2018 Magnum3D.ru"
 msgstr ""
 
 #: Source.cpp:95

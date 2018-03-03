@@ -1205,7 +1205,7 @@
                                 <property name="gripper">0</property>
                                 <property name="hidden">0</property>
                                 <property name="id">wxID_ANY</property>
-                                <property name="label">(C) 2014 - 2015 Magnum3D.ru</property>
+                                <property name="label">(C) 2014 - 2018 Magnum3D.ru</property>
                                 <property name="max_size"></property>
                                 <property name="maximize_button">0</property>
                                 <property name="maximum_size"></property>
