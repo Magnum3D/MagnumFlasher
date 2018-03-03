@@ -18,11 +18,17 @@ wxIMPLEMENT_APP(MyApp);
 
 #include "FlashDialog.h"
 
-size_t curlWXStringWriter(void *ptr, size_t size, size_t nmemb, wxString* buf) {
-	char* ch = (char*) calloc(1, size * nmemb + 2);
-	memcpy(ch, ptr, size * nmemb);
-	buf->Append(wxString::FromUTF8(ch, size * nmemb));
-	free(ch);
+size_t curlMemBlockWriter(void *ptr, size_t size, size_t nmemb, class MemBlock* buf) {
+	char* ch = (char*) calloc(1, buf->size + size * nmemb);
+	if (buf->ptr != NULL) {
+		memcpy(ch, buf->ptr, buf->size);
+	}
+	memcpy(ch + buf->size, ptr, size * nmemb);
+	if (buf->ptr != NULL) {
+		free(buf->ptr);
+	}
+	buf->ptr = ch;
+	buf->size += size * nmemb;
 	return size * nmemb;
 }
 
@@ -123,13 +129,13 @@ public:
 	}
 
 	wxFileName* downloadFile(wxString name, wxString url) {
-		wxString buf;
+		MemBlock buf;
 		CURL* curl = curl_easy_init();
 		curl_easy_setopt(curl, CURLOPT_URL, (const char*) url);
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
 		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
-		curl_easy_setopt(curl, CURLOPT_USERAGENT, _("MagnumFlasher-by-huksley"));
-		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curlWXStringWriter);
+		curl_easy_setopt(curl, CURLOPT_USERAGENT, _("github.com/huksley/MagnumFlasher"));
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curlMemBlockWriter);
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buf);
 		CURLcode res = curl_easy_perform(curl);
 		curl_easy_cleanup(curl);
@@ -140,7 +146,7 @@ public:
 		wxString temp = wxStandardPaths::Get().GetTempDir();
 		wxFileName* fname = new wxFileName(wxString::Format("%s/%s", temp, name));
 		wxFile* f = new wxFile(fname->GetFullPath(), wxFile::write);
-		f->Write(buf);
+		f->Write(buf.handoff());
 		f->Close();
 		delete f;
 		return fname;
@@ -151,23 +157,26 @@ public:
 		firmwareRefreshButton->Disable();
 		CURL* curl = curl_easy_init();
 		if(curl) {
-			wxString buf;
+			MemBlock buf;
+			char errbuf[CURL_ERROR_SIZE];
 			wxString url = app->config->Read("ReleaseURL", _("https://api.github.com/repos/Magnum3D/MagnumFirmware/releases"));
 			curl_easy_setopt(curl, CURLOPT_URL, (const char*) url);
 			curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
 			curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
-			curl_easy_setopt(curl, CURLOPT_USERAGENT, _("MagnumFlasher-by-huksley"));
-			curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curlWXStringWriter);
+			curl_easy_setopt(curl, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1);
+			curl_easy_setopt(curl, CURLOPT_USERAGENT, _("github.com/huksley/MagnumFlasher"));
+			curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curlMemBlockWriter);
 			curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buf);
+			curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errbuf);
 			CURLcode res = curl_easy_perform(curl);
 			curl_easy_cleanup(curl);
 			if (res != CURLE_OK) {
-				setProgress(wxString::Format(_("Error requesting %s: %i %s"),  url, res, wxString(curl_easy_strerror(res))));
+				setProgress(wxString::Format(_("Error requesting %s: %i %s"), url, res, wxString(curl_easy_strerror(res))));
 				return;
 			}
 
 			app->config->Write("ReleaseURL", url);
-			parseFirmware(buf);
+			parseFirmware(buf.handoff());
 		}
 		fillFirmware();
 	}
@@ -177,6 +186,7 @@ public:
 		Document d;
 		wxLogVerbose("JSON: %s", buf);
 		const char* json = (const char*)buf.mb_str(wxConvUTF8);
+		int len = _mbstrlen(json);
 		d.Parse(json);
 		if (d.HasParseError()) {
 			const char* err = "?";
@@ -199,9 +209,11 @@ public:
 			case kParseErrorTermination: err = "Parsing was terminated."; break;
 			case kParseErrorUnspecificSyntaxError: err = "Unspecific syntax error."; break;
 			}
-			wxLogWarning("Failed to parse JSON, code %i %s pos %i", (int) d.GetParseError(), wxString(err), d.GetErrorOffset());
+			wxLogWarning("Failed to parse JSON, code %i %s pos %i len %i:%i", (int) d.GetParseError(), wxString(err), d.GetErrorOffset(), wxString(json).Length(), len);
+			wxLogWarning("JSON %s", json);
 			return;
 		}
+		
 		app->config->Write("LatestReleases", buf);
 		int cap = d.Capacity();
 		wxLogVerbose("Found releases: %i", cap);

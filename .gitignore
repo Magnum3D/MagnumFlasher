@@ -19,3 +19,7 @@ wx
 /ms
 /bin
 
+/.vs/Magnum3D/v14/*.suo
+/Magnum3D.VC.db
+libcurl-7.58
+wx2
