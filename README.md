@@ -1,6 +1,8 @@
 # MagnumFlasher
 Magnum3D firmware flasher
 
+{{screenshot1.png}}
+
 Downloads a list of firmware from github.com/Magnum3D
 and flashes them using HID bootloader.
 
